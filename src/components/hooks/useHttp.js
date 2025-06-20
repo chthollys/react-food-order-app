@@ -18,6 +18,10 @@ export default function useHttp(url, config, initialData) {
     setData(initialData);
   }
 
+  function clearError() {
+    setError();
+  }
+
   const sendRequest = useCallback(
     async function sendRequest(data) {
       setIsPending(true);
@@ -43,5 +47,6 @@ export default function useHttp(url, config, initialData) {
     error,
     sendRequest,
     clearData,
+    clearError,
   };
 }

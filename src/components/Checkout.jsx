@@ -25,14 +25,19 @@ export default function Checkout() {
     error,
     sendRequest,
     clearData,
+    clearError,
   } = useHttp("http://localhost:3000/orders", requestConfig);
 
-  async function handleSubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
     const fd = new FormData(event.target);
     const customer = Object.fromEntries(fd.entries());
 
     sendRequest(JSON.stringify({ order: { items, customer } }));
+  }
+
+  function handleClearError() {
+    clearError();
   }
 
   function handleCloseCheckout() {
@@ -50,7 +55,7 @@ export default function Checkout() {
       <Button type="button" textOnly onClick={handleCloseCheckout}>
         Close
       </Button>
-      <Button>Submit Order</Button>
+      <Button onClick={handleClearError}>Submit Order</Button>
     </>
   );
 
@@ -72,7 +77,7 @@ export default function Checkout() {
 
   return (
     <Modal open={userProgress.checkout} onClose={handleCloseCheckout}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <h2>Checkout</h2>
         <p>
           Total Amount: {currencyFormatter.format(getItemsTotalPrice(items))}
